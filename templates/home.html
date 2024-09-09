@@ -1,0 +1,91 @@
+{% extends "base.html" %}
+{% block content %}
+
+    <div class="chat-container">
+        <!-- User Prompt Section -->
+        <div class="user-prompt">
+            <h4>User Prompts</h4>
+            <div class="messages">
+                {% if user_prompt %}
+                    <p>{{ user_prompt }}</p>
+                {% else %}
+                    <p>No user prompt yet.</p>
+                {% endif %}
+            </div>
+        </div>
+
+        <!-- Chat Form Section -->
+        <div class="chat-form">
+            <h4>Chat with GPT</h4>
+            <form method="POST" action="{% url 'chat_gpt' %}" id="chat-form">
+                {% csrf_token %}
+                <div class="form-group">
+                    <label for="prompt">Enter your prompt:</label><br>
+                    <textarea name="prompt" id="prompt" rows="4" cols="50" placeholder="Type your message here..." required></textarea><br>
+                </div>
+                <button type="submit" class="btn btn-primary mt-3">Send</button>
+            </form>
+        </div>
+
+        <!-- OpenAI Response Section -->
+        <div class="openai-response">
+            <h4>OpenAI Responses</h4>
+            <div class="messages">
+                {% if response %}
+                    <pre><code>{{ response|safe }}</code></pre>
+                {% else %}
+                    <p>No response yet.</p>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+
+    <style>
+        body {
+            background-color: #f8f9fa;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+        }
+
+        .chat-container {
+            width: 80%;
+            max-width: 1200px;
+            background-color: #ffffff;
+            box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 10px;
+            display: flex;
+            flex-direction: row;
+            overflow: hidden;
+        }
+
+        .user-prompt, .openai-response {
+            width: 30%;
+            padding: 20px;
+            background-color: #f1f1f1;
+            overflow-y: auto;
+            height: 500px;
+        }
+
+        .chat-form {
+            width: 40%;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            background-color: #e9ecef;
+        }
+
+        .form-group textarea {
+            resize: none;
+            height: 150px;
+        }
+
+        .messages {
+            margin-bottom: 20px;
+        }
+    </style>
+
+{% endblock %}
